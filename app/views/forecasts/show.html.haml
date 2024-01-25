@@ -1,5 +1,5 @@
 = render "shared/flash"
-%h1 Forecast
+%h1 Forecast for #{@forecast_cache_key}
 = form_with(method: 'get', local: true) do
   = label :address, "What is your address?"
   %br
@@ -8,50 +8,62 @@
   = submit_tag("Lookup")
 
 %br
-latitude: #{@geocoder.latitude}"
+latitude: #{@geocoder&.latitude}"
 %br
-longitude: #{@geocoder.longitude}"
+longitude: #{@geocoder&.longitude}"
 %br
-cache_key: #{@forecast_cache_key}
+Is this result from the cache? #{@forecast_cache_exist}
 %br
 %br
--# @forecast['timelines']['daily'].each do |days|
-  = Date.parse(days['time']).strftime('%A, %m/%d/%Y')
-  %br
-  %br
-
 - if defined?(@forecast)
-  - @forecast['timelines']['daily'].each do |days|
-    %ul
-      %li
-        Day: #{Date.parse(days['time']).strftime('%A, %m/%d/%Y')}
-      %li
-        Temperature:
-        = days['values']['temperatureApparentAvg']
-        °C
-        = "/"
-        = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentAvg'])
-        °F
-      %li
-        Temperature Minimum:
-        = days['values']['temperatureApparentMin']
-        °C
-        = "/"
-        = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentMin'])
-        °F
-      %li
-        Temperature Maximum:
-        Max:
-        = days['values']['temperatureApparentMax']
-        °C
-        = "/"
-        = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentMax'])
-        °F
-      %li
-        Humidity:
-        = days['values']['humidityAvg']
-      %li
-        Pressure: #{days['values']['pressureSurfaceLevelAvg']} millibars
-      %li
-        Is this result from the cache? #{@forecast_cache_exist}
+  / Weather
+  - @forecast['timelines']['daily'].each_with_index do |days, index|
+    - if index == 0
+      .container.mt-5
+        .d-flex.flex-row.justify-content-center.align-items-center
+          .weather__card
+            .d-flex.flex-row.justify-content-center.align-items-center
+              .p-3
+                %h2
+                  = days['values']['temperatureApparentAvg'].to_i
+                  °C
+                  = "/"
+                  = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentAvg']).to_i
+                  °F
+              .p-3
+                %h5
+                  %br
+                  = Date.parse(days['time']).strftime('%A')
+                %h3
+                  = @geocoder.postal_code
 
+                - if days['values']['cloudCoverAvg'].to_i >= 0 && days['values']['cloudCoverAvg'].to_i < 25
+                  %span.weather__description Sunny
+                - elsif days['values']['cloudCoverAvg'].to_i > 25 && days['values']['cloudCoverAvg'].to_i <= 50
+                  %span.weather__description Mostly Sunny
+                - elsif days['values']['cloudCoverAvg'].to_i > 50 && days['values']['cloudCoverAvg'].to_i <= 75
+                  %span.weather__description Mostly Cloudy
+                - elsif days['values']['cloudCoverAvg'].to_i > 75 && days['values']['cloudCoverAvg'].to_i <= 100
+                  %span.weather__description Cloudy
+
+            .weather__status.d-flex.flex-row.justify-content-center.align-items-center.mt-3
+              .p-4.d-flex.justify-content-center.align-items-center
+                %img{:src => "https://svgur.com/i/oHw.svg"}/
+                %span
+                  = number_to_percentage(days['values']['precipitationProbabilityAvg'].to_i, precision: 0)
+              .p-4.d-flex.justify-content-center.align-items-center
+                %img{:src => "https://svgur.com/i/oKS.svg"}/
+                %span
+                  #{ days['values']['windSpeedAvg'].to_i} km/h
+    - else
+      / Weather Forecast
+      .weather__forecast.d-flex.flex-row.justify-content-center.align-items-center.mt-3
+        .p-4.d-flex.flex-column.justify-content-center.align-items-center
+          %span
+            = Date.parse(days['time']).strftime('%a')
+          %span
+            = days['values']['temperatureApparentAvg'].to_i
+            °C
+            = "/"
+            = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentAvg']).to_i
+            °F
