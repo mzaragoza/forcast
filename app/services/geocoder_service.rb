@@ -1,6 +1,9 @@
 class GeocoderService
 
   def self.call(address)
+    if address.empty?
+      address = Rails.application.config.default_address
+    end
     response = Geocoder.search(address)
     response or raise IOError.new "Geocoder error"
     response.length > 0 or raise IOError.new "Geocoder is empty: #{response}"
