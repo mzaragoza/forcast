@@ -14,6 +14,7 @@ gem "sprockets-rails" # The original asset pipeline for Rails [https://github.co
 gem "stimulus-rails"  # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "turbo-rails"     # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'haml'            # Haml is a templating engine for HTML.
+gem 'awesome_print'   # makes the console nicer
 
 gem "geocoder"        # Look up a map address and convert it to latitude, longitude, etc.
 
@@ -32,6 +33,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ] # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'dotenv' # Shim to load environment variables from .env into ENV in development.
   gem 'rspec-rails', '~> 6.1.0'
+  gem 'webmock'
 end
 
 group :development do
