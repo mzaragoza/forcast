@@ -15,6 +15,8 @@ gem "stimulus-rails"  # Hotwire's modest JavaScript framework [https://stimulus.
 gem "turbo-rails"     # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem 'haml'            # Haml is a templating engine for HTML.
 
+gem "geocoder"        # Look up a map address and convert it to latitude, longitude, etc.
+
 
 # gem "kredis"        # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 
