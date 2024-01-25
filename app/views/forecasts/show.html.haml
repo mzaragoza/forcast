@@ -8,9 +8,50 @@
   = submit_tag("Lookup")
 
 %br
-= "latitude: #{@geocoder.latitude}"
+latitude: #{@geocoder.latitude}"
 %br
-= "longitude: #{@geocoder.longitude}"
+longitude: #{@geocoder.longitude}"
 %br
-= "postal_code: #{@geocoder.postal_code}"
+cache_key: #{@forecast_cache_key}
 %br
+%br
+-# @forecast['timelines']['daily'].each do |days|
+  = Date.parse(days['time']).strftime('%A, %m/%d/%Y')
+  %br
+  %br
+
+- if defined?(@forecast)
+  - @forecast['timelines']['daily'].each do |days|
+    %ul
+      %li
+        Day: #{Date.parse(days['time']).strftime('%A, %m/%d/%Y')}
+      %li
+        Temperature:
+        = days['values']['temperatureApparentAvg']
+        °C
+        = "/"
+        = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentAvg'])
+        °F
+      %li
+        Temperature Minimum:
+        = days['values']['temperatureApparentMin']
+        °C
+        = "/"
+        = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentMin'])
+        °F
+      %li
+        Temperature Maximum:
+        Max:
+        = days['values']['temperatureApparentMax']
+        °C
+        = "/"
+        = WeatherService.celsius_fahrenheit(days['values']['temperatureApparentMax'])
+        °F
+      %li
+        Humidity:
+        = days['values']['humidityAvg']
+      %li
+        Pressure: #{days['values']['pressureSurfaceLevelAvg']} millibars
+      %li
+        Is this result from the cache? #{@forecast_cache_exist}
+
