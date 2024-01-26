@@ -95,6 +95,7 @@ add the `geocoder` gem to the Gemfile
 % gem "geocoder"        # Look up a map address and convert it to latitude, longitude, etc.
 ```
 configure
+```sh
 # config/initializers/geocoder.rb
 Geocoder.configure(
     esri: {
@@ -105,6 +106,4 @@ Geocoder.configure(
         for_storage: true
     }
 )
-
-
-
+```
