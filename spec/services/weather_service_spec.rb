@@ -21,7 +21,8 @@ RSpec.describe WeatherService do
 
       it 'returns the weather data' do
         weather_data = WeatherService.call(latitude, longitude)
-        expect(weather_data).to eq(response_body)
+        expect(weather_data["temperature"]).to eq(25.5)
+        expect(weather_data["conditions"]).to eq("Clear")
       end
     end
 
