@@ -85,3 +85,26 @@ Install Ruby on Rails:
 % cd forcast
 % bundle install
 ```
+
+
+### APIs 
+* Geocoder
+get api keys from https://developer.here.com/
+add the `geocoder` gem to the Gemfile
+```sh
+% gem "geocoder"        # Look up a map address and convert it to latitude, longitude, etc.
+```
+configure
+# config/initializers/geocoder.rb
+Geocoder.configure(
+    esri: {
+        api_key: [
+            ENV['GEOCODER_APP_ID'],
+            ENV['GEOCODER_API_KEY'],
+        ],
+        for_storage: true
+    }
+)
+
+
+
