@@ -71,3 +71,17 @@ I like to use the `rvm` version manager to install software such as programming 
 
 You've successfully installed RVM and a specific version of Ruby. This allows you to easily manage different Ruby environments for your projects. If you encounter any issues, feel free to ask for further assistance.
 
+### Install Rails
+
+Install Ruby on Rails:
+
+```sh
+% gem install rails
+```
+
+### Download Project
+```sh
+% git clone git@github.com:mzaragoza/forcast.git
+% cd forcast
+% bundle install
+```
